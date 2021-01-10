@@ -22,7 +22,13 @@ jobs:
     - name: Verify doc includes
       run: |
         python test-scripts/check-doc-links.py
+    - name: Check file existence
+      id: check_files
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "output.md"
     - uses: harupy/comment-on-pr@master
+      if: steps.check_files.outputs.files_exists == 'true'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
