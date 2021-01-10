@@ -41,6 +41,7 @@ def main():
                 if name in urls[line]:
                     lines.append(line.split("allwpilib" + os.path.sep)[1])
 
+    modified = False
     with open("output.md", "w") as f:
         f.write("# Documentation Updates Needed!\n")
         f.write("The following links in the [frc-docs](https://github.com/wpilibsuite/frc-docs) repository need to be updated\n")
@@ -51,7 +52,11 @@ def main():
         
         f.write("```\n")
 
-    print("No changes are necessary")
+        print("Documentation updates are needed!")
+        modified = True
+
+    if not modified:
+        print("No changes are necessary")
 
 
 if __name__ == '__main__':
