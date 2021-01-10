@@ -51,6 +51,8 @@ def main():
         
         f.write("```\n")
 
+    print("No changes are necessary")
+
 
 if __name__ == '__main__':
     main()
