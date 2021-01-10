@@ -52,7 +52,10 @@ def main():
         
         f.write("```\n")
 
+<<<<<<< HEAD
+=======
         print("Documentation updates are needed!")
+>>>>>>> actions-ci
         modified = True
 
     if not modified:
