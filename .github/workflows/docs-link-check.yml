@@ -15,7 +15,7 @@ jobs:
         python-version: 3.7
     - name: Remove unchanged files
       run: |
-        git ls-files -v | sort | uniq -u | grep ".*" | xargs rm
+        git ls-files -v | sort | uniq -u | grep "^h" | xargs rm
     - name: Clone frc-docs
       run: |
         git clone https://github.com/wpilibsuite/frc-docs.git --depth=1
