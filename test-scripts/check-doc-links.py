@@ -39,7 +39,7 @@ def main():
         for line in urls:
             for name in files:
                 if name in urls[line]:
-                    print(line)
+                    print(line.split("allwpilib" + os.path.sep)[1])
                     lines.append(line.split("allwpilib" + os.path.sep)[1])
 
     modified = False
