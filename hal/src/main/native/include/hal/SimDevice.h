@@ -197,6 +197,30 @@ inline HAL_Value HAL_GetSimValue(HAL_SimValueHandle handle) {
 #endif
 
 /**
+ * Gets a simulated value (int).
+ *
+ * @param handle simulated value handle
+ * @return The current value
+ */
+inline int32_t HAL_GetSimValueInt(HAL_SimValueHandle handle) {
+  struct HAL_Value v;
+  HAL_GetSimValue(handle, &v);
+  return v.type == HAL_INT ? v.data.v_int : 0;
+}
+
+/**
+ * Gets a simulated value (long).
+ *
+ * @param handle simulated value handle
+ * @return The current value
+ */
+inline int64_t HAL_GetSimValueLong(HAL_SimValueHandle handle) {
+  struct HAL_Value v;
+  HAL_GetSimValue(handle, &v);
+  return v.type == HAL_LONG ? v.data.v_long : 0;
+}
+
+/**
  * Gets a simulated value (double).
  *
  * @param handle simulated value handle
@@ -249,6 +273,28 @@ inline void HAL_SetSimValue(HAL_SimValueHandle handle, const HAL_Value& value) {
 #endif
 
 /**
+ * Sets a simulated value (int).
+ *
+ * @param handle simulated value handle
+ * @param value the value to set
+ */
+inline void HAL_SetSimValueInt(HAL_SimValueHandle handle, int value) {
+  struct HAL_Value v = HAL_MakeInt(value);
+  HAL_SetSimValue(handle, &v);
+}
+
+/**
+ * Sets a simulated value (long).
+ *
+ * @param handle simulated value handle
+ * @param value the value to set
+ */
+inline void HAL_SetSimValueLong(HAL_SimValueHandle handle, int64_t value) {
+  struct HAL_Value v = HAL_MakeLong(value);
+  HAL_SetSimValue(handle, &v);
+}
+
+/**
  * Sets a simulated value (double).
  *
  * @param handle simulated value handle
@@ -280,6 +326,17 @@ inline void HAL_SetSimValueBoolean(HAL_SimValueHandle handle, HAL_Bool value) {
   struct HAL_Value v = HAL_MakeBoolean(value);
   HAL_SetSimValue(handle, &v);
 }
+
+/**
+ * Resets a simulated double or integral value to 0.
+ * Has no effect on other value types.
+ * Use this instead of Set(0) for resetting incremental sensor values like
+ * encoder counts or gyro accumulated angle to ensure correct behavior in a
+ * distributed system (e.g. WebSockets).
+ *
+ * @param handle simulated value handle
+ */
+void HAL_ResetSimValue(HAL_SimValueHandle handle);
 
 /** @} */
 
@@ -343,6 +400,88 @@ class SimValue {
 };
 
 /**
+ * C++ wrapper around a HAL simulator int value handle.
+ */
+class SimInt : public SimValue {
+ public:
+  /**
+   * Default constructor that results in an "empty" object that is false in
+   * a boolean context.
+   */
+  SimInt() = default;
+
+  /**
+   * Wraps a simulated value handle as returned by HAL_CreateSimValueInt().
+   *
+   * @param handle simulated value handle
+   */
+  /*implicit*/ SimInt(HAL_SimValueHandle val)  // NOLINT
+      : SimValue(val) {}
+
+  /**
+   * Gets the simulated value.
+   *
+   * @return The current value
+   */
+  int32_t Get() const { return HAL_GetSimValueInt(m_handle); }
+
+  /**
+   * Sets the simulated value.
+   *
+   * @param value the value to set
+   */
+  void Set(int32_t value) { HAL_SetSimValueInt(m_handle, value); }
+
+  /**
+   * Resets the simulated value to 0. Use this instead of Set(0) for resetting
+   * incremental sensor values like encoder counts or gyro accumulated angle
+   * to ensure correct behavior in a distributed system (e.g. WebSockets).
+   */
+  void Reset() { HAL_ResetSimValue(m_handle); }
+};
+
+/**
+ * C++ wrapper around a HAL simulator long value handle.
+ */
+class SimLong : public SimValue {
+ public:
+  /**
+   * Default constructor that results in an "empty" object that is false in
+   * a boolean context.
+   */
+  SimLong() = default;
+
+  /**
+   * Wraps a simulated value handle as returned by HAL_CreateSimValueLong().
+   *
+   * @param handle simulated value handle
+   */
+  /*implicit*/ SimLong(HAL_SimValueHandle val)  // NOLINT
+      : SimValue(val) {}
+
+  /**
+   * Gets the simulated value.
+   *
+   * @return The current value
+   */
+  int64_t Get() const { return HAL_GetSimValueLong(m_handle); }
+
+  /**
+   * Sets the simulated value.
+   *
+   * @param value the value to set
+   */
+  void Set(int64_t value) { HAL_SetSimValueLong(m_handle, value); }
+
+  /**
+   * Resets the simulated value to 0. Use this instead of Set(0) for resetting
+   * incremental sensor values like encoder counts or gyro accumulated angle
+   * to ensure correct behavior in a distributed system (e.g. WebSockets).
+   */
+  void Reset() { HAL_ResetSimValue(m_handle); }
+};
+
+/**
  * C++ wrapper around a HAL simulator double value handle.
  */
 class SimDouble : public SimValue {
@@ -374,6 +513,13 @@ class SimDouble : public SimValue {
    * @param value the value to set
    */
   void Set(double value) { HAL_SetSimValueDouble(m_handle, value); }
+
+  /**
+   * Resets the simulated value to 0. Use this instead of Set(0) for resetting
+   * incremental sensor values like encoder counts or gyro accumulated angle
+   * to ensure correct behavior in a distributed system (e.g. WebSockets).
+   */
+  void Reset() { HAL_ResetSimValue(m_handle); }
 };
 
 /**

@@ -82,6 +82,36 @@ public class SimDeviceJNI extends JNIWrapper {
   }
 
   /**
+   * Creates an int value on a simulated device.
+   *
+   * <p>Returns 0 if not in simulation; this can be used to avoid calls to Set/Get functions.
+   *
+   * @param device simulated device handle
+   * @param name value name
+   * @param direction input/output/bidir (from perspective of user code)
+   * @param initialValue initial value
+   * @return simulated value handle
+   */
+  public static int createSimValueInt(int device, String name, int direction, int initialValue) {
+    return createSimValueNative(device, name, direction, HALValue.kInt, initialValue, 0.0);
+  }
+
+  /**
+   * Creates a long value on a simulated device.
+   *
+   * <p>Returns 0 if not in simulation; this can be used to avoid calls to Set/Get functions.
+   *
+   * @param device simulated device handle
+   * @param name value name
+   * @param direction input/output/bidir (from perspective of user code)
+   * @param initialValue initial value
+   * @return simulated value handle
+   */
+  public static int createSimValueLong(int device, String name, int direction, long initialValue) {
+    return createSimValueNative(device, name, direction, HALValue.kLong, initialValue, 0.0);
+  }
+
+  /**
    * Creates a double value on a simulated device.
    *
    * <p>Returns 0 if not in simulation; this can be used to avoid calls to Set/Get functions.
@@ -222,6 +252,22 @@ public class SimDeviceJNI extends JNIWrapper {
   public static native HALValue getSimValue(int handle);
 
   /**
+   * Gets a simulated value (int).
+   *
+   * @param handle simulated value handle
+   * @return The current value
+   */
+  public static native int getSimValueInt(int handle);
+
+  /**
+   * Gets a simulated value (long).
+   *
+   * @param handle simulated value handle
+   * @return The current value
+   */
+  public static native long getSimValueLong(int handle);
+
+  /**
    * Gets a simulated value (double).
    *
    * @param handle simulated value handle
@@ -258,6 +304,26 @@ public class SimDeviceJNI extends JNIWrapper {
   }
 
   /**
+   * Sets a simulated value (int).
+   *
+   * @param handle simulated value handle
+   * @param value the value to set
+   */
+  public static void setSimValueInt(int handle, int value) {
+    setSimValueNative(handle, HALValue.kInt, value, 0.0);
+  }
+
+  /**
+   * Sets a simulated value (long).
+   *
+   * @param handle simulated value handle
+   * @param value the value to set
+   */
+  public static void setSimValueLong(int handle, long value) {
+    setSimValueNative(handle, HALValue.kLong, value, 0.0);
+  }
+
+  /**
    * Sets a simulated value (double).
    *
    * @param handle simulated value handle
@@ -286,4 +352,13 @@ public class SimDeviceJNI extends JNIWrapper {
   public static void setSimValueBoolean(int handle, boolean value) {
     setSimValueNative(handle, HALValue.kBoolean, value ? 1 : 0, 0.0);
   }
+
+  /**
+   * Resets a simulated double or integral value to 0. Has no effect on other value types. Use this
+   * instead of Set(0) for resetting incremental sensor values like encoder counts or gyro
+   * accumulated angle to ensure correct behavior in a distributed system (e.g. WebSockets).
+   *
+   * @param handle simulated value handle
+   */
+  public static native void resetSimValue(int handle);
 }

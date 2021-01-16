@@ -155,6 +155,30 @@ Java_edu_wpi_first_hal_SimDeviceJNI_getSimValue
 
 /*
  * Class:     edu_wpi_first_hal_SimDeviceJNI
+ * Method:    getSimValueInt
+ * Signature: (I)I
+ */
+JNIEXPORT jint JNICALL
+Java_edu_wpi_first_hal_SimDeviceJNI_getSimValueInt
+  (JNIEnv*, jclass, jint handle)
+{
+  return HAL_GetSimValueInt(handle);
+}
+
+/*
+ * Class:     edu_wpi_first_hal_SimDeviceJNI
+ * Method:    getSimValueLong
+ * Signature: (I)J
+ */
+JNIEXPORT jlong JNICALL
+Java_edu_wpi_first_hal_SimDeviceJNI_getSimValueLong
+  (JNIEnv*, jclass, jint handle)
+{
+  return HAL_GetSimValueLong(handle);
+}
+
+/*
+ * Class:     edu_wpi_first_hal_SimDeviceJNI
  * Method:    getSimValueDouble
  * Signature: (I)D
  */
@@ -199,6 +223,18 @@ Java_edu_wpi_first_hal_SimDeviceJNI_setSimValueNative
   (JNIEnv*, jclass, jint handle, jint type, jlong value1, jdouble value2)
 {
   HAL_SetSimValue(handle, ValueFromJava(type, value1, value2));
+}
+
+/*
+ * Class:     edu_wpi_first_hal_SimDeviceJNI
+ * Method:    resetSimValue
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL
+Java_edu_wpi_first_hal_SimDeviceJNI_resetSimValue
+  (JNIEnv*, jclass, jint handle)
+{
+  HAL_ResetSimValue(handle);
 }
 
 }  // extern "C"

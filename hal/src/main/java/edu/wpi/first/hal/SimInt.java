@@ -4,14 +4,14 @@
 
 package edu.wpi.first.hal;
 
-/** A wrapper around a simulator double value handle. */
-public class SimDouble extends SimValue {
+/** A wrapper around a simulator int value handle. */
+public class SimInt extends SimValue {
   /**
-   * Wraps a simulated value handle as returned by SimDeviceJNI.createSimValueDouble().
+   * Wraps a simulated value handle as returned by SimDeviceJNI.createSimValueInt().
    *
    * @param handle simulated value handle
    */
-  public SimDouble(int handle) {
+  public SimInt(int handle) {
     super(handle);
   }
 
@@ -20,8 +20,8 @@ public class SimDouble extends SimValue {
    *
    * @return The current value
    */
-  public double get() {
-    return SimDeviceJNI.getSimValueDouble(m_handle);
+  public int get() {
+    return SimDeviceJNI.getSimValueInt(m_handle);
   }
 
   /**
@@ -29,8 +29,8 @@ public class SimDouble extends SimValue {
    *
    * @param value the value to set
    */
-  public void set(double value) {
-    SimDeviceJNI.setSimValueDouble(m_handle, value);
+  public void set(int value) {
+    SimDeviceJNI.setSimValueInt(m_handle, value);
   }
 
   /**

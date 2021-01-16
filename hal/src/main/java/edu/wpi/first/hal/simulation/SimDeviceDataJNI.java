@@ -29,6 +29,7 @@ public class SimDeviceDataJNI extends JNIWrapper {
   public static native int getSimValueDeviceHandle(int handle);
 
   public static class SimDeviceInfo {
+    @SuppressWarnings("JavadocMethod")
     public SimDeviceInfo(String name, int handle) {
       this.name = name;
       this.handle = handle;
@@ -59,9 +60,23 @@ public class SimDeviceDataJNI extends JNIWrapper {
 
   public static native void cancelSimValueChangedCallback(int uid);
 
+  /**
+   * Register a callback for SimDeviceJNI.resetSimValue(). The callback is called with the old
+   * value.
+   *
+   * @param handle simulated value handle
+   * @param callback callback
+   * @param initialNotify ignored (present for consistency)
+   */
+  public static native int registerSimValueResetCallback(
+      int handle, SimValueCallback2 callback, boolean initialNotify);
+
+  public static native void cancelSimValueResetCallback(int uid);
+
   public static native int getSimValueHandle(int device, String name);
 
   public static class SimValueInfo {
+    @SuppressWarnings("JavadocMethod")
     public SimValueInfo(
         String name, int handle, int direction, int type, long value1, double value2) {
       this.name = name;
