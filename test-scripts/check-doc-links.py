@@ -39,6 +39,7 @@ def main():
         for line in urls:
             for name in files:
                 if name in urls[line]:
+                    print(line)
                     lines.append(line.split("allwpilib" + os.path.sep)[1])
 
     modified = False
@@ -49,7 +50,6 @@ def main():
 
         for line in lines:
             print(line)
-            f.write(line + "\n")
         
         f.write("```\n")
         f.write("frc-docs literalinclude report")
