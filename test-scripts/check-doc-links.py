@@ -48,6 +48,7 @@ def main():
         f.write("```\n")
 
         for line in lines:
+            print(line)
             f.write(line + "\n")
         
         f.write("```\n")
