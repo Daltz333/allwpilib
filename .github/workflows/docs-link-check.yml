@@ -43,7 +43,7 @@ jobs:
         body="${body//'%'/'%25'}"
         body="${body//$'\n'/'%0A'}"
         body="${body//$'\r'/'%0D'}" 
-        echo ::set-output name=$body
+        echo ::set-output name=body::$body
     - name: Create comment
       if: ${{ steps.fc.outputs.comment-id == 0 }}
       uses: peter-evans/create-or-update-comment@v1
@@ -57,4 +57,4 @@ jobs:
       with:
         comment-id: ${{ steps.fc.outputs.comment-id }}
         body: |
-          body: ${{ steps.get-comment-body.outputs.body }}
+          ${{ steps.get-comment-body.outputs.body }}
