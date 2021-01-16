@@ -52,7 +52,8 @@ def main():
         
         f.write("```\n")
 
-        print("Documentation updates are needed!")
+        print("Documentation updates are needed! \n")
+        print("frc-docs literalinclude report")
         modified = True
 
     if not modified:
