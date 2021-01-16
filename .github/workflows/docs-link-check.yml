@@ -56,5 +56,6 @@ jobs:
       uses: peter-evans/create-or-update-comment@v1
       with:
         comment-id: ${{ steps.fc.outputs.comment-id }}
+        edit-mode: replace
         body: |
           ${{ steps.get-comment-body.outputs.body }}
